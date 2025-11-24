@@ -5,7 +5,7 @@ const db = require('../config/database');
 // Gender gap per regione - singola query
 router.get('/getImmbByRegion', async (req, res) => {
   try {    
-    console.log(req.query.regione);
+    // console.log(req.query.regione);
     
     const regione = req.query.regione.toUpperCase();
     

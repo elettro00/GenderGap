@@ -11081,7 +11081,7 @@
       "properties": {
         "source": "https://simplemaps.com", 
         "id": "IT32", 
-        "name": "Trentino-Alto Adige"
+        "name": "Trentino Alto Adige"
       }, 
       "id": 5
     }, 
@@ -42803,7 +42803,7 @@
       "properties": {
         "source": "https://simplemaps.com", 
         "id": "IT45", 
-        "name": "Emilia-Romagna"
+        "name": "Emilia Romagna"
       }, 
       "id": 19
     }, 

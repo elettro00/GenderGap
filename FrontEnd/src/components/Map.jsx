@@ -150,7 +150,7 @@ const Map = () => {
                 />
                 <ResizeMap />
                 <LimitMap />
-                <div className="cover-badge"></div>
+                <div className="map-cover-badge"></div>
               </MapContainer>
             ) : (
               <div className="map-placeholder">Errore nel caricamento della mappa</div>

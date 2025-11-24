@@ -11,7 +11,7 @@ try {
 app.use(cors({
     origin: process.env.REACT_APP_URL,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 

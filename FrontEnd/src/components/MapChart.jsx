@@ -10,19 +10,33 @@ const MapChart = ({ region }) => {
   useEffect(() => {
     region &&
     axios.get(`http://localhost:8080/api/queries/getImmbByRegion?regione=${region ? region.name : "ITALIA"  }`, {})
-    .then(response => {setData(response.data);})
+    .then(response => {setData( () => {
+
+    if(response.data)
+    {
+        let women = response.data.donne.map((x) => millify(x))
+        let men = response.data.uomini.map((x) => millify(x))
+      console.log(women, men);
+      console.log({donne :[...women], uomini: [...men]});
+      
+        return {donne :[...women], uomini: [...men]}
+    }
+      return []
+    })})
     .catch(error => console.error('Errore:', error))
     .finally(() => setLoading(false));
   }, [region]);
 
 
     useEffect(() => {
-      console.log(region);
       axios.get(`http://localhost:8080/api/queries/getImmbByRegion?regione=ITALIA`, {})
       .then(response => {setData(response.data);})
       .catch(error => console.error('Errore:', error))
       .finally(() => setLoading(false));
     }, [])
+
+    // console.log(millify(Math.random() * 1000000 + 10000));
+    
   
   
   if (loading) return <p>Caricamento...</p>;
