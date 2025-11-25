@@ -1,6 +1,7 @@
 import React from "react";
 import Chart from "react-apexcharts";
 import "../styles/apexchart_custom.css"
+import { millify } from 'millify';
 
 const BarChart = ({data1, data2, label1, label2, categories}) => {
   const options = {
@@ -71,11 +72,11 @@ const BarChart = ({data1, data2, label1, label2, categories}) => {
       intersect: false,
       y: {
         formatter: function (val) {
-          return val +"k";
+          return millify(val).toString();
         }
       }
     },
-
+    
     yaxis: {
 
       labels: {

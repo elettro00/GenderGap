@@ -8,6 +8,7 @@ import '../styles/map.css'
 import MapChart from "./MapChart";
 
 
+
 const ResizeMap = () => {
   const map = useMap();
   

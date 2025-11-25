@@ -3,6 +3,7 @@ import "../styles/stats.css"
 import Count from './animations/Count'
 
 export default function Stats() {
+
   return (
     <section id='stats' class="section">
 
@@ -40,3 +41,5 @@ export default function Stats() {
     </section>
   )
 }
+
+
