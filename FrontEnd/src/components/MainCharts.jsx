@@ -27,7 +27,11 @@ export default function MainCharts(){
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const cardsData = [
-    {}, {}, {}, {}, {},
+    {text:'Test 1'}, 
+    {text:'Test 10'}, 
+    {text:'Test 100'}, 
+    {text:'Test 1000'}, 
+    {text:'Test 10000'},
   ];
 
   const handlePrev = () => {
@@ -73,6 +77,7 @@ export default function MainCharts(){
               key={idx}
               className={`graph-card ${getCardClass(idx)}`}
             >
+                <h3>{card.text}</h3>
               {data && <BarChart
               vertical={true}
         categories={["Immatricolati","Laureati", "Dottorandi", "Dottori" , "Professori"]}
