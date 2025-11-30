@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "../../styles/mainChart.css";
+import "../../styles/secondaryChart.css";
 import axios from "axios";
 import ColumnChart from "../chartsType/ColumnChart";
 
-
 export default function SecondaryChart() {
-
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,25 +13,37 @@ export default function SecondaryChart() {
       .get(`http://localhost:8080/api/queries/getWomenPer`, {})
       .then((response) => {
         setData(() => {
-          return response.data;
+          const temp = [];
+          Object.entries(response.data).forEach(([chiave, x]) => {
+            console.log(chiave, x);
+            console.log(x.anno);
+            temp.push({
+              anno: x.anno,
+              cod: x.cod,
+              value: x.PercCOD,
+            });
+
+          });
+          return temp;
         });
       })
       .catch((error) => console.error("Errore:", error))
       .finally(() => setLoading(false));
   }, []);
 
-  
-  const dataLen = 5
-  const cardsData = [
-    {},{},{},{}, {}
-  ];
+  const dataLen = 5;
+  const cardsData = [{}, {}, {}, {}, {}];
 
-  const handlePrev = () => {    
-    setCurrentIndex((prev) => prev != 0 ? (prev - 1 + cardsData.length) % cardsData.length : prev);
+  const handlePrev = () => {
+    setCurrentIndex((prev) =>
+      prev != 0 ? (prev - 1 + cardsData.length) % cardsData.length : prev
+    );
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => prev != dataLen - 1 ?  (prev + 1) % cardsData.length : prev);
+    setCurrentIndex((prev) =>
+      prev != dataLen - 1 ? (prev + 1) % cardsData.length : prev
+    );
   };
 
   const getCardClass = (index) => {
@@ -43,49 +53,65 @@ export default function SecondaryChart() {
     return "next";
   };
 
-  data && Object.entries(data).forEach(([chiave, valore]) =>
-    { 
-      console.log(chiave, valore)
-    }
-);
+  console.log(data);
   
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="mainchart-containter">
+    <div className="secondary-containter">
       <h1>Grafici</h1>
 
-      <div className={`mainchart-wrapper`}>
+      <div className={`secondary-wrapper`}>
+        {currentIndex != 0 && (
+          <button
+            className="arrow-btn arrow-btn-left"
+            onClick={handlePrev}
+            aria-label="Precedente"
+          >
+            ←
+          </button>
+        )}
 
-        {currentIndex != 0 && <button
-          className="arrow-btn arrow-btn-left"
-          onClick={handlePrev}
-          aria-label="Precedente"
-        >
-          ←
-        </button>}
+        <div className="secondary-stack-container">          
+          {data && data.map((x, idx) => (
+            <div
+              key={idx}
+              className={`graph-card ${getCardClass(idx)}`}
+            >
 
-        <div className="stack-container">
-          {data && 
-           
-              <div key={1} onClick={currentIndex + 1 == 1 && handleNext || currentIndex + 1 == 1 + 2 && handlePrev || (() => {}) } 
-              className={`graph-card ${getCardClass(1)} ${currentIndex == 1  || currentIndex + 1 == 1 || currentIndex + 1 == 1 + 2 ? "" : "invisible"}` }>
-                <h3>Text</h3>
-                
-                         <ColumnChart categories={[1, 2, 3, 4]} data1={[54, 23, 12, 32]} data2={[23, 34, 12, 12]} vertical={true}/>
 
+            <div className="secondary-stack-index">
+              {x.value.map((y, z) => (
+              <div key={z}>
+                {x.cod[z]}
               </div>
-            }
+              ))
+              }
+            </div>
+              <h3>Text</h3>
+
+              <ColumnChart
+                categories={[...x.anno]}
+                data1={[...x.value[0]]}
+                data2={[...x.value[0].map((w) => (100 - w).toFixed(2))]}
+                vertical={true}
+                label1={"Donne"}
+                label2={"Uomini"}
+              />
+            </div>
+          ))}
         </div>
 
-        {currentIndex != dataLen - 1 && <button
-          className="arrow-btn arrow-btn-right"
-          onClick={handleNext}
-          aria-label="Successivo"
-        >
-          →
-        </button>}
+        {currentIndex != dataLen - 1 && (
+          <button
+            className="arrow-btn arrow-btn-right"
+            onClick={handleNext}
+            aria-label="Successivo"
+          >
+            →
+          </button>
+        )}
       </div>
       <div className="indicator">
         {cardsData.map((_, idx) => (

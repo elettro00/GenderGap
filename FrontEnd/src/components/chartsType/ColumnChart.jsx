@@ -19,12 +19,12 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
     states: {
       hover: {
         filter: {
-          
+          type: 'none'
         }
       },
       active: {
         filter: {
-          
+          type: 'none'  
         }
       }
     },
@@ -37,25 +37,22 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
       },
     },
 
-
     dataLabels: {
       enabled: false,
       style: {
-      colors: ['#000']
-    }
+        colors: ['#000']
+      }
     },
-
 
     legend: {
       position: 'bottom',
-       onItemClick: {
-      toggleDataSeries: true
-    },
+      onItemClick: {
+        toggleDataSeries: true
+      },
       labels: {
-      colors: ['#ffffff', '#ffffff']
-    }
+        colors: ['#ffffff', '#ffffff']
+      }
     },
-
 
     tooltip: {
       theme: 'dark',
@@ -70,24 +67,22 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
     },
     
     yaxis: {
-
       labels: {
-      style: {
-        colors: '#ffffff', 
-        fontSize: '12px'
+        style: {
+          colors: '#ffffff', 
+          fontSize: '12px'
+        }
       }
-    }
     },
 
     xaxis: {
       categories: categories,
-
       labels: {
-      style: {
-        colors: '#ffffff', 
-        fontSize: '12px'
+        style: {
+          colors: '#ffffff', 
+          fontSize: '12px'
+        }
       }
-    }
     },
   };
 

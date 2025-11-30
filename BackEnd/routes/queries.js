@@ -316,9 +316,6 @@ router.get("/getWomenPer", async (req, res) => {
       return res
     };
 
-    console.log(results_a);
-    
-
     const results = {
       immatricolati: resOptimizer(results_i),
 
