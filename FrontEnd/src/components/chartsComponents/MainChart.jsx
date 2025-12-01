@@ -88,7 +88,6 @@ export default function MainChart({w}) {
           <button
             className="arrow-btn arrow-btn-left"
             onClick={handlePrev}
-            aria-label="Precedente"
           >
             ←
           </button>
@@ -115,18 +114,18 @@ export default function MainChart({w}) {
                 <LineChart
                 vertical={true}
                 categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
-                data1={chart.donne}
-                data2={chart.uomini}
-                label1="donne"
-                label2="uomini"
+                data1={chart.uomini}
+                data2={chart.donne}
+                label1="uomini"
+                label2="donne"
                 active={idx === currentIndex}
               /> :  (w < 900 && currentIndex == idx) && <LineChart
                 vertical={true}
                 categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
-                data1={chart.donne}
-                data2={chart.uomini}
-                label1="donne"
-                label2="uomini"
+                data1={chart.uomini}
+                data2={chart.donne}
+                label1="uomini"
+                label2="donne"
                 active={idx === currentIndex}
               />}
             </div>
@@ -153,7 +152,6 @@ export default function MainChart({w}) {
               setCurrentIndex(idx);
               toggleWillChange(true);
             }}
-            aria-label={`Vai a card ${idx + 1}`}
           />
         ))}
       </div>

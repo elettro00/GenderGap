@@ -3,6 +3,19 @@
   animation-duration: 0.001s !important; 
 }
 
+/* animazioni ingresso */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
 * {
   margin: 0;
   padding: 0;

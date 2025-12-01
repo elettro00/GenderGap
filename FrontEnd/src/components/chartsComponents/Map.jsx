@@ -93,7 +93,6 @@ const Map = () => {
     });
     
     layer.on("mouseover", () => {
-      // Hover solo se NON è selezionata
       if (selectedRegion?.name !== regionName) {
         layer.setStyle({
           fillColor: "#eb1902",
@@ -106,7 +105,7 @@ const Map = () => {
     });
 
     layer.on("mouseout", () => {
-      // Ripristina lo stile solo se NON è selezionata
+     
       if (selectedRegion?.name !== regionName) {
         layer.setStyle({
           fillColor: "#ffffff",

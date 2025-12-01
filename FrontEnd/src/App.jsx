@@ -1,5 +1,6 @@
 import Charts from './components/Charts'
 import Footer from './components/Footer'
+import GenderGapFAQ from './components/GenderGapFAQ'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Insights from './components/Insights'
@@ -16,6 +17,7 @@ function App() {
       <Header />
       <Hero />
       <Stats />
+      <GenderGapFAQ />
       <Charts />
       <Insights />
       <Footer />

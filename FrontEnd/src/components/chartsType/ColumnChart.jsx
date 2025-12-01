@@ -2,7 +2,7 @@ import React from "react";
 import Chart from "react-apexcharts";
 import "../../styles/apexchart_custom.css"
 
-const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
+const ColumnChart = ({data1, data2, label1, label2, categories, vertical, w}) => {
   const options = {
     stroke: {
       width: 1, 
@@ -11,7 +11,6 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
 
     chart: {
       type: 'bar',
-      height: 350,
       stacked: true,
       stackType: "100%",
      
@@ -46,7 +45,7 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
     plotOptions: {
       bar: {
         horizontal: vertical ? false : true,
-        columnWidth: '50%',
+        columnWidth: vertical ? '50%' : '30%',
         endingShape: 'rounded',
       },
     },
@@ -61,7 +60,7 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
     legend: {
       position: 'bottom',
       onItemClick: {
-        toggleDataSeries: true
+        toggleDataSeries: false
       },
       labels: {
         colors: ['#ffffff', '#ffffff']
@@ -84,7 +83,7 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
       labels: {
         style: {
           colors: '#ffffff', 
-          fontSize: '12px'
+          fontSize: w < 600 ? '10px' : '12px'
         }
       }
     },
@@ -94,7 +93,7 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
       labels: {
         style: {
           colors: '#ffffff', 
-          fontSize: '12px'
+          fontSize: w < 600 ? '10px' : '12px'
         }
       }
     },
@@ -110,7 +109,8 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
       data: data2,
     },
   ];
-
+  console.log(w);
+  
   return <Chart options={options} series={series} type="bar" height={350} />;
 };
 

@@ -13,6 +13,7 @@ export default function Header() {
         <nav>
           <a href="#hero">Home</a>
           <a href="#stats">Statistiche</a>
+          <a href="#gender-gap-faq">FAQ</a>
           <a href="#charts-section">Analisi</a>
           <a href="#insights">Approfondimenti</a>
         </nav>

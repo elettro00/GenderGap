@@ -3,19 +3,21 @@ import "../../styles/secondaryChart.css";
 import axios from "axios";
 import ColumnChart from "../chartsType/ColumnChart";
 
-export default function SecondaryChart({w}) {
+export default function SecondaryChart({ w }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentSubIndex, setCurrentSubIndex] = useState(0);
 
-   const containerRef = useRef(null); 
-  
-    const toggleWillChange = useCallback((enable) => {
-      if (containerRef.current) {
-        containerRef.current.style.willChange = enable ? 'transform opacity' : 'auto';
-      }
-    }, []);
+  const containerRef = useRef(null);
+
+  const toggleWillChange = useCallback((enable) => {
+    if (containerRef.current) {
+      containerRef.current.style.willChange = enable
+        ? "transform opacity"
+        : "auto";
+    }
+  }, []);
 
   useEffect(() => {
     axios
@@ -33,7 +35,6 @@ export default function SecondaryChart({w}) {
             });
 
             // console.log(temp);
-            
           });
           return temp;
         });
@@ -43,37 +44,51 @@ export default function SecondaryChart({w}) {
   }, []);
 
   const dataLen = 5;
-  const cardsData = [{}, {}, {}, {}, {}];
+  const cardsData = [{
+    titolo: "Immatricolati"
+  }, {
+    titolo: "Laureati"
 
-const handlePrev = useCallback(() => {
-    setCurrentIndex((prev) => prev > 0 ? prev - 1 : dataLen - 1);
+  }, {
+    titolo: "Dottori"
+
+  }, {
+    titolo: "Dottorandi"
+
+  }, {
+    titolo: "Professori e Ricercatori"
+
+  }];
+
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : dataLen - 1));
     toggleWillChange(true);
-    setCurrentSubIndex(0)
+    setCurrentSubIndex(0);
   }, [toggleWillChange, setCurrentSubIndex]);
 
   const handleNext = useCallback(() => {
-    setCurrentIndex((prev) => prev < dataLen - 1 ? prev + 1 : 0);
+    setCurrentIndex((prev) => (prev < dataLen - 1 ? prev + 1 : 0));
     toggleWillChange(true);
-    setCurrentSubIndex(0)
+    setCurrentSubIndex(0);
   }, [toggleWillChange, setCurrentSubIndex]);
 
   useEffect(() => {
-      const timer = setTimeout(() => toggleWillChange(false), 50); 
-      return () => clearTimeout(timer);
-    }, [currentIndex, setCurrentSubIndex, toggleWillChange]);
+    const timer = setTimeout(() => toggleWillChange(false), 50);
+    return () => clearTimeout(timer);
+  }, [currentIndex, setCurrentSubIndex, toggleWillChange]);
 
-   const getCardClass = useCallback((index) => {
+  const getCardClass = useCallback(
+    (index) => {
       const diff = (index - currentIndex + dataLen) % dataLen;
       if (diff === 0) return "active";
       if (diff === dataLen - 1) return "prev";
       return "next";
-    }, [currentIndex]);
-
+    },
+    [currentIndex]
+  );
 
   // console.log(data);
   // console.log(currentSubIndex);
-  
-  
 
   if (loading) return <div>Loading...</div>;
 
@@ -81,103 +96,126 @@ const handlePrev = useCallback(() => {
     <div className="secondary-containter" ref={containerRef}>
       <h1>Grafici</h1>
 
-      <div className={`secondary-wrapper`}>
-        {currentIndex != 0 && (
-          <button
-            className="arrow-btn arrow-btn-left"
-            onClick={handlePrev}
-            aria-label="Precedente"
-          >
-            ←
-          </button>
-        )}
+      <div className="secondary-all-containter">
 
-        <div className="secondary-stack-container">          
-          {data && data.map((x, idx) => (
-            <div
-              key={idx}
-               onClick={(() => {
-                if(currentIndex + 1 == idx)
-                    handleNext()
-                else if(currentIndex  == idx + 1)
-                    handlePrev()
-              }) } 
-              className={`graph-card ${getCardClass(idx)} ${
-                Math.abs(idx - currentIndex) > 1 ? "invisible" : "" 
-              }`}
-            >
+        <div className="chart-sc">
+          <div className={`secondary-wrapper`}>
+            {currentIndex != 0 && (
+              <button className="arrow-btn arrow-btn-left" onClick={handlePrev}>
+                ←
+              </button>
+            )}
 
+            <div className="secondary-stack-container">
+              {data &&
+                data.map((x, idx) => (
+                  <div
+                    key={idx}
+                    onClick={() => {
+                      if (currentIndex + 1 == idx) handleNext();
+                      else if (currentIndex == idx + 1) handlePrev();
+                    }}
+                    className={`graph-card ${getCardClass(idx)} ${
+                      Math.abs(idx - currentIndex) > 1 ? "invisible" : ""
+                    }`}
+                  >
+                    <div className="secondary-stack-index">
+                      {x.value.map((y, z) => (
+                        <div
+                          className={`${currentSubIndex == z && "selected"}`}
+                          key={z}
+                          onClick={() => {
+                            currentSubIndex != z && setCurrentSubIndex(z);
+                            toggleWillChange(true);
+                          }}
+                        >
+                          {x.cod[z] === "06" || x.cod[z] === "09"
+                            ? "ICT"
+                            : x.cod[z] === "07" || x.cod[z] === "08"
+                            ? "Ingegneria"
+                            : x.cod[z] === "01"
+                            ? " Scienze"
+                            : ""}
+                        </div>
+                      ))}
+                    </div>
+                    <h3>{cardsData[idx].titolo}</h3>
 
-            <div className="secondary-stack-index">
+                    {x.value[currentSubIndex] &&
+                    w >= 900 &&
+                    (idx == currentIndex ||
+                      idx == currentIndex + 1 ||
+                      idx + 1 == currentIndex) ? (
+                      <ColumnChart
+                        w={w}
+                        categories={[...x.anno]}
+                        data1={[...x.value[currentSubIndex]]}
+                        data2={[
+                          ...x.value[currentSubIndex].map((w) =>
+                            (100 - w).toFixed(2)
+                          ),
+                        ]}
+                        vertical={w >= 900 ? true : false}
+                        label1={"Donne"}
+                        label2={"Uomini"}
+                      />
+                    ) : (
+                      w < 900 &&
+                      currentIndex == idx && (
+                        <ColumnChart
+                          w={w}
+                          categories={[...x.anno]}
+                          data1={[
+                            ...x.value[currentSubIndex].map((w) =>
+                              (100 - w).toFixed(2)
+                            ),
+                          ]}
+                          data2={[...x.value[currentSubIndex]]}
+                          vertical={w >= 900 ? true : false}
+                          label1={"Uomini"}
+                          label2={"Donne"}
+                        />
+                      )
+                    )}
+                  </div>
+                ))}
+            </div>
 
-              {x.value.map((y, z) => (
+            {currentIndex != dataLen - 1 && (
+              <button
+                className="arrow-btn arrow-btn-right"
+                onClick={handleNext}
+                aria-label="Successivo"
+              >
+                →
+              </button>
+            )}
+          </div>
+
+          <div className="indicator">
+            {cardsData.map((_, idx) => (
               <div
-              className={`${currentSubIndex == z && 'selected'}`} 
-              key={z} onClick={() =>{ 
-                currentSubIndex != z && setCurrentSubIndex(z); toggleWillChange(true);
-              }
-              }>
-                {x.cod[z] === '06' || x.cod[z] === '08' ? 'Ingegneria' 
-                : x.cod[z] === '07' || x.cod[z] === '09' ? 'ICT' 
-                : x.cod[z] === '01' ? ' Scienze' : ''}
-              </div>
-              ))
-
-
-              }
-            </div>
-              <h3>Text</h3>
-
-              {x.value[currentSubIndex] && w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ?  <ColumnChart
-                categories={[...x.anno]}
-                data1={[...x.value[currentSubIndex]]}
-                data2={[...x.value[currentSubIndex].map((w) => (100 - w).toFixed(2))]}
-                vertical={true}
-                label1={"Donne"}
-                label2={"Uomini"}
+                key={idx}
+                className={`dot ${idx === currentIndex ? "active" : ""}`}
+                onClick={() => {
+                  setCurrentIndex(idx);
+                  toggleWillChange(true);
+                }}
               />
-            : (w < 900 && currentIndex == idx) &&
-             <ColumnChart
-                categories={[...x.anno]}
-                data1={[...x.value[currentSubIndex]]}
-                data2={[...x.value[currentSubIndex].map((w) => (100 - w).toFixed(2))]}
-                vertical={true}
-                label1={"Donne"}
-                label2={"Uomini"}
-              />
-            }
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        {currentIndex != dataLen - 1 && (
-          <button
-            className="arrow-btn arrow-btn-right"
-            onClick={handleNext}
-            aria-label="Successivo"
-          >
-            →
-          </button>
-        )}
+        <div className="chart-description">
+        <p>I grafici mostrano chiaramente come il divario di genere in Italia nelle discipline STEM e ICT si manifesti e si amplifichi lungo tutte le fasi della carriera accademica: 
+          dalle immatricolazioni ai laureati, dai dottori ai dottorandi, fino ai professori e ricercatori. 
+          La zona in cui il Gender Gap è maggiore sono le discipline ICT, in tutte le varie fasi della carriara accademica e sempre la materia con la situazione piu preoccupante.
+          In ogni categoria, la presenza delle donne resta sempre inferiore rispetto a quella degli uomini, 
+          riflettendo ostacoli strutturali e culturali persistenti lungo tutto il percorso universitario e scientifico.</p>
       </div>
-      <div className="indicator">
-        {cardsData.map((_, idx) => (
-          <div
-            key={idx}
-            className={`dot ${idx === currentIndex ? "active" : ""}`}
-            onClick={() => {
-              setCurrentIndex(idx);
-              toggleWillChange(true);
-            }}
-            aria-label={`Vai a card ${idx + 1}`}
-          />
-        ))}
       </div>
 
-      <div className="chart-description">
-        <h3>{cardsData[currentIndex].titolo}</h3>
-        <p>{cardsData[currentIndex].descrizione}</p>
-      </div>
+      
     </div>
   );
 }

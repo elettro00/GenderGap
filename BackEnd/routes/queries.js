@@ -2,7 +2,86 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/database");
 
-// Gender gap per regione - singola query
+
+   const resOptimizer = (inData) => {
+      let res = {
+        anno: [],
+        cod: [],
+        PercCOD: [],
+      };
+
+      try {
+        inData.forEach((x) => {
+          if (!res.anno.includes(x.anno)) res.anno.push(x.anno);
+          if (!res.cod.includes(x.cod_foet2013)) {
+            res.cod.push(x.cod_foet2013);
+            res.PercCOD.push([]);
+          }
+        });
+
+        res.cod.forEach((x, idx) => {
+          inData.map((y) => {
+            if (y.cod_foet2013 == x) res.PercCOD[idx].push(y.perc_donne_stem);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      return res;
+    };
+
+    const resOptimizerStaff = (inData) => {
+      let res = {
+        anno: [],
+        cod: [],
+        PercCOD: [],
+      };
+
+      try {
+        inData.forEach((x) => {
+          if (!res.anno.includes(x.anno)) res.anno.push(x.anno);
+          if (
+            !res.cod.includes(x.cod_sd) &&
+            x.cod_sd != "02" &&
+            x.cod_sd != "04"
+          ) {
+            res.cod.push(x.cod_sd);
+            res.PercCOD.push([]);
+          }
+        });
+
+        let scienceData = [];
+
+        // console.log(inData);
+
+        for (let j = 0; j < 13; j++)
+          scienceData.push(
+            (
+              (parseFloat(inData[j].perc_donne_stem) +
+                parseFloat(inData[j + 1].perc_donne_stem) +
+                parseFloat(inData[j + 2].perc_donne_stem)) /
+              3
+            ).toFixed(2)
+          );
+
+        res.PercCOD[0].push(...scienceData);
+        // console.log(scienceData);
+
+        res.cod.forEach((x, idx) => {
+          inData.map((y) => {
+            if (y.cod_sd == x && x != "01")
+              res.PercCOD[idx].push(y.perc_donne_stem);
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      return res;
+    };
+
+
 router.get("/getByRegion", async (req, res) => {
   try {
     // console.log(req.query.regione);
@@ -259,84 +338,6 @@ router.get("/getWomenPer", async (req, res) => {
     let [results_d] = await db.query(query_d);
     let [results_dn] = await db.query(query_dn);
     let [results_a] = await db.query(query_a);
-
-    const resOptimizer = (inData) => {
-      let res = {
-        anno: [],
-        cod: [],
-        PercCOD: [],
-      };
-
-      try {
-        inData.forEach((x) => {
-          if (!res.anno.includes(x.anno)) res.anno.push(x.anno);
-          if (!res.cod.includes(x.cod_foet2013)) {
-            res.cod.push(x.cod_foet2013);
-            res.PercCOD.push([]);
-          }
-        });
-
-        res.cod.forEach((x, idx) => {
-          inData.map((y) => {
-            if (y.cod_foet2013 == x) res.PercCOD[idx].push(y.perc_donne_stem);
-          });
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-      return res;
-    };
-
-    const resOptimizerStaff = (inData) => {
-      let res = {
-        anno: [],
-        cod: [],
-        PercCOD: [],
-      };
-
-      try {
-        inData.forEach((x) => {
-          if (!res.anno.includes(x.anno)) res.anno.push(x.anno);
-          if (
-            !res.cod.includes(x.cod_sd) &&
-            x.cod_sd != "02" &&
-            x.cod_sd != "04"
-          ) {
-            res.cod.push(x.cod_sd);
-            res.PercCOD.push([]);
-          }
-        });
-
-        let scienceData = [];
-
-        // console.log(inData);
-
-        for (let j = 0; j < 13; j++)
-          scienceData.push(
-            (
-              (parseFloat(inData[j].perc_donne_stem) +
-                parseFloat(inData[j + 1].perc_donne_stem) +
-                parseFloat(inData[j + 2].perc_donne_stem)) /
-              3
-            ).toFixed(2)
-          );
-
-        res.PercCOD[0].push(...scienceData);
-        // console.log(scienceData);
-
-        res.cod.forEach((x, idx) => {
-          inData.map((y) => {
-            if (y.cod_sd == x && x != "01")
-              res.PercCOD[idx].push(y.perc_donne_stem);
-          });
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-      return res;
-    };
 
     const results = {
       immatricolati: resOptimizer(results_i),

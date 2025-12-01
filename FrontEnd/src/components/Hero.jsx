@@ -1,67 +1,129 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
 import "../styles/hero.css"
 
 export default function Hero() {
-  useEffect(() => {
-    // Genera valori randomici per ogni sfera
-    const shapes = document.querySelectorAll('.floating-shape');
-    
-    shapes.forEach((shape) => {
-      // Posizioni randomiche iniziali
-      const randomTop = Math.random() * 80;
-      const randomLeft = Math.random() * 80;
-      
-      // Durate randomiche
-      const randomDuration = 8 + Math.random() * 12; // 8-20s
-      const randomDelay = 1 + Math.random() * 5; // 0-5s
-      
-      // Distanze di movimento randomiche
-      const randomDistance = 20 + Math.random() * 60; // 20-80px
-      
-      // Applica le variabili CSS
-      shape.style.setProperty('--top', `${randomTop}%`);
-      shape.style.setProperty('--left', `${randomLeft}%`);
-      shape.style.setProperty('--duration', `${randomDuration}s`);
-      shape.style.setProperty('--delay', `${randomDelay}s`);
-      shape.style.setProperty('--distance', `${randomDistance}px`);
-      
-      // Scegli direzione randomica
-      const randomDirection = Math.random();
-      if (randomDirection < 0.33) {
-        shape.classList.add('float-up');
-      } else if (randomDirection < 0.66) {
-        shape.classList.add('float-diagonal');
-      } else {
-        shape.classList.add('float-side');
-      }
-    });
-  }, []);
+  // Varianti di animazione
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" },
+    },
+  };
+
+  const titleVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: "easeOut" },
+    },
+  };
+
+  const gridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 0.5,
+      transition: { duration: 1.5, ease: "easeIn" },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: "easeOut", delay: 0.6 },
+    },
+    hover: {
+      scale: 1.05,
+      boxShadow: "0 20px 50px rgba(139, 92, 246, 0.8)",
+      transition: { duration: 0.3 },
+    },
+    tap: { scale: 0.95 },
+  };
 
   return (
     <section id='hero'>
-      {/* Background animato */}
-      <div className='animated-bg'>
-        <div className='floating-shape shape-1'></div>
-        <div className='floating-shape shape-2'></div>
-        <div className='floating-shape shape-3'></div>
-        <div className='floating-shape shape-4'></div>
-        <div className='floating-shape shape-5'></div>
-        <div className='floating-shape shape-6'></div>
-      </div>
+      <motion.div
+        className='animated-grid'
+        variants={gridVariants}
+        initial="hidden"
+        animate="visible"
+      />
 
-      {/* Grid animato */}
-      <div className='animated-grid'></div>
+    
+      <motion.div
+        className='hero-content'
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+    
+        <motion.h1
+          className='hero-title'
+          variants={titleVariants}
+        >
+          Il Gender Gap in Italia
+        </motion.h1>
 
-      {/* Contenuto */}
-      <div className='hero-content'>
-        <h1 className='hero-title'>Il Gender Gap in Italia</h1>
-        <p className='hero-subtitle'>
+        
+        <motion.p
+          className='hero-subtitle'
+          variants={itemVariants}
+        >
           Analisi approfondita dei dati, tendenze e prospettive
-        </p>
-        <a className="cta-a" href='#charts-section'>
+        </motion.p>
+
+    
+        <motion.a
+          className="cta-a"
+          href='#charts-section'
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+        >
           Scopri i Dati
-        </a>
-      </div>
+        </motion.a>
+      </motion.div>
+
+      <motion.div
+        className="floating-element floating-1"
+        animate={{
+          y: [0, -30, 0],
+          rotate: [0, 5, 0],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+      <motion.div
+        className="floating-element floating-2"
+        animate={{
+          y: [0, 30, 0],
+          rotate: [0, -5, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
     </section>
   );
 }
