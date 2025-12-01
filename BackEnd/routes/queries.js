@@ -285,7 +285,7 @@ router.get("/getWomenPer", async (req, res) => {
         console.log(error);
       }
 
-      return res
+      return res;
     };
 
     const resOptimizerStaff = (inData) => {
@@ -298,28 +298,50 @@ router.get("/getWomenPer", async (req, res) => {
       try {
         inData.forEach((x) => {
           if (!res.anno.includes(x.anno)) res.anno.push(x.anno);
-          if (!res.cod.includes(x.cod_sd)) {
+          if (
+            !res.cod.includes(x.cod_sd) &&
+            x.cod_sd != "02" &&
+            x.cod_sd != "04"
+          ) {
             res.cod.push(x.cod_sd);
             res.PercCOD.push([]);
           }
         });
 
+        let scienceData = [];
+
+        // console.log(inData);
+
+        for (let j = 0; j < 13; j++)
+          scienceData.push(
+            (
+              (parseFloat(inData[j].perc_donne_stem) +
+                parseFloat(inData[j + 1].perc_donne_stem) +
+                parseFloat(inData[j + 2].perc_donne_stem)) /
+              3
+            ).toFixed(2)
+          );
+
+        res.PercCOD[0].push(...scienceData);
+        // console.log(scienceData);
+
         res.cod.forEach((x, idx) => {
           inData.map((y) => {
-            if (y.cod_sd == x) res.PercCOD[idx].push(y.perc_donne_stem);
+            if (y.cod_sd == x && x != "01")
+              res.PercCOD[idx].push(y.perc_donne_stem);
           });
         });
       } catch (error) {
         console.log(error);
       }
 
-      return res
+      return res;
     };
 
     const results = {
       immatricolati: resOptimizer(results_i),
 
-      laureati:  resOptimizer(results_l),
+      laureati: resOptimizer(results_l),
 
       dottoranti: resOptimizer(results_d),
 

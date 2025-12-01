@@ -20,7 +20,20 @@ const LineChart = ({data1, label1, data2, label2, categories, active}) => {
       zoom: {
         enabled: false,
       },
-      redrawOnParentResize: true
+      redrawOnParentResize: true,
+      animations: {
+        enabled: true,
+        speed: 200,
+        animateGradually: {
+            enabled: true,
+            delay: 50
+        },
+        dynamicAnimation: {
+            enabled: true,
+            speed: 350
+        }
+    }
+   
     },
 
     dataLabels: {

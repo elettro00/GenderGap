@@ -32,12 +32,12 @@ export default function Charts() {
 
       <div className="chart-container">
         <div className="chart-title">Alcuni dati riguardanti il Gender Gap</div>
-        <MainChart />
+        <MainChart w={width}/>
       </div>
 
       <div className="chart-container">
         <div className="chart-title">il Gender Gap</div>
-        <SecondaryChart />
+        <SecondaryChart w={width} />
       </div>
     </section>
   );

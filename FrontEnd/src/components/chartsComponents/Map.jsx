@@ -172,7 +172,7 @@ const Map = () => {
 
 
       <div className="map-description">
-            <p>La mappa mostra come in tutte le regioni italiane il digital gender gap nel settore ICT si amplifichi 
+            <p>La mappa mostra come in tutte le regioni italiane il <b>Gender Gap</b> nel settore ICT si amplifichi 
               lungo la carriera accademica: le donne sono già minoranza tra gli immatricolati e 
               diventano ancora più sottorappresentate tra laureati e soprattutto tra professori e ricercatori, 
               segno di barriere strutturali e culturali che ostacolano la progressione femminile nel digitale</p>

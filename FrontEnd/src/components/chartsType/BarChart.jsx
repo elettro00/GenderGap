@@ -4,6 +4,8 @@ import "../../styles/apexchart_custom.css"
 import { millify } from 'millify';
 
 const BarChart = ({data1, data2, label1, label2, categories, vertical}) => {
+
+  
   const options = {
     stroke: {
       width: 1, 

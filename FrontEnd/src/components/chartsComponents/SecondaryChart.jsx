@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "../../styles/secondaryChart.css";
 import axios from "axios";
 import ColumnChart from "../chartsType/ColumnChart";
 
-export default function SecondaryChart() {
+export default function SecondaryChart({w}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentSubIndex, setCurrentSubIndex] = useState(0);
+
+   const containerRef = useRef(null); 
+  
+    const toggleWillChange = useCallback((enable) => {
+      if (containerRef.current) {
+        containerRef.current.style.willChange = enable ? 'transform opacity' : 'auto';
+      }
+    }, []);
 
   useEffect(() => {
     axios
@@ -14,15 +23,17 @@ export default function SecondaryChart() {
       .then((response) => {
         setData(() => {
           const temp = [];
-          Object.entries(response.data).forEach(([chiave, x]) => {
-            console.log(chiave, x);
-            console.log(x.anno);
+          Object.entries(response.data).forEach(([, x]) => {
+            // console.log(chiave, x);
+            // console.log(x.anno);
             temp.push({
               anno: x.anno,
               cod: x.cod,
               value: x.PercCOD,
             });
 
+            // console.log(temp);
+            
           });
           return temp;
         });
@@ -34,32 +45,40 @@ export default function SecondaryChart() {
   const dataLen = 5;
   const cardsData = [{}, {}, {}, {}, {}];
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev != 0 ? (prev - 1 + cardsData.length) % cardsData.length : prev
-    );
-  };
+const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => prev > 0 ? prev - 1 : dataLen - 1);
+    toggleWillChange(true);
+    setCurrentSubIndex(0)
+  }, [toggleWillChange, setCurrentSubIndex]);
 
-  const handleNext = () => {
-    setCurrentIndex((prev) =>
-      prev != dataLen - 1 ? (prev + 1) % cardsData.length : prev
-    );
-  };
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => prev < dataLen - 1 ? prev + 1 : 0);
+    toggleWillChange(true);
+    setCurrentSubIndex(0)
+  }, [toggleWillChange, setCurrentSubIndex]);
 
-  const getCardClass = (index) => {
-    const diff = (index - currentIndex + cardsData.length) % cardsData.length;
-    if (diff === 0) return "active";
-    if (diff === cardsData.length - 1) return "prev";
-    return "next";
-  };
+  useEffect(() => {
+      const timer = setTimeout(() => toggleWillChange(false), 50); 
+      return () => clearTimeout(timer);
+    }, [currentIndex, setCurrentSubIndex, toggleWillChange]);
 
-  console.log(data);
+   const getCardClass = useCallback((index) => {
+      const diff = (index - currentIndex + dataLen) % dataLen;
+      if (diff === 0) return "active";
+      if (diff === dataLen - 1) return "prev";
+      return "next";
+    }, [currentIndex]);
+
+
+  // console.log(data);
+  // console.log(currentSubIndex);
+  
   
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="secondary-containter">
+    <div className="secondary-containter" ref={containerRef}>
       <h1>Grafici</h1>
 
       <div className={`secondary-wrapper`}>
@@ -77,28 +96,56 @@ export default function SecondaryChart() {
           {data && data.map((x, idx) => (
             <div
               key={idx}
-              className={`graph-card ${getCardClass(idx)}`}
+               onClick={(() => {
+                if(currentIndex + 1 == idx)
+                    handleNext()
+                else if(currentIndex  == idx + 1)
+                    handlePrev()
+              }) } 
+              className={`graph-card ${getCardClass(idx)} ${
+                Math.abs(idx - currentIndex) > 1 ? "invisible" : "" 
+              }`}
             >
 
 
             <div className="secondary-stack-index">
+
               {x.value.map((y, z) => (
-              <div key={z}>
-                {x.cod[z]}
+              <div
+              className={`${currentSubIndex == z && 'selected'}`} 
+              key={z} onClick={() =>{ 
+                currentSubIndex != z && setCurrentSubIndex(z); toggleWillChange(true);
+              }
+              }>
+                {x.cod[z] === '06' || x.cod[z] === '08' ? 'Ingegneria' 
+                : x.cod[z] === '07' || x.cod[z] === '09' ? 'ICT' 
+                : x.cod[z] === '01' ? ' Scienze' : ''}
               </div>
               ))
+
+
               }
             </div>
               <h3>Text</h3>
 
-              <ColumnChart
+              {x.value[currentSubIndex] && w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ?  <ColumnChart
                 categories={[...x.anno]}
-                data1={[...x.value[0]]}
-                data2={[...x.value[0].map((w) => (100 - w).toFixed(2))]}
+                data1={[...x.value[currentSubIndex]]}
+                data2={[...x.value[currentSubIndex].map((w) => (100 - w).toFixed(2))]}
                 vertical={true}
                 label1={"Donne"}
                 label2={"Uomini"}
               />
+            : (w < 900 && currentIndex == idx) &&
+             <ColumnChart
+                categories={[...x.anno]}
+                data1={[...x.value[currentSubIndex]]}
+                data2={[...x.value[currentSubIndex].map((w) => (100 - w).toFixed(2))]}
+                vertical={true}
+                label1={"Donne"}
+                label2={"Uomini"}
+              />
+            }
             </div>
           ))}
         </div>
@@ -118,7 +165,10 @@ export default function SecondaryChart() {
           <div
             key={idx}
             className={`dot ${idx === currentIndex ? "active" : ""}`}
-            onClick={() => setCurrentIndex(idx)}
+            onClick={() => {
+              setCurrentIndex(idx);
+              toggleWillChange(true);
+            }}
             aria-label={`Vai a card ${idx + 1}`}
           />
         ))}

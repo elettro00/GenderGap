@@ -44,12 +44,9 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: 
-    transform 0.75s cubic-bezier(0.19, 1, 0.22, 1),
-    opacity 0.25s ease-in-out,
-    z-index 0.44s;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  will-change: transform, opacity, z-index;
+  will-change: auto;
+  transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.25s ease-in-out;
 }
 
 .graph-card.invisible {
@@ -77,7 +74,7 @@ h1 {
   opacity: 0.4;
 }
 
-.graph-card.prev:hover {
+/* .graph-card.prev:hover {
   z-index: 5;
   transform: translateX(-82px) scale(0.88) rotateY(8deg) translateY(-100px); 
   opacity: 0.3;
@@ -88,7 +85,7 @@ h1 {
   z-index: 5;
   transform: translateX(100px) scale(0.88) rotateY(-15deg) translateY(85px); 
   opacity: 0.3;
-}
+} */
 
 .card-title {
   font-size: 1.3rem;

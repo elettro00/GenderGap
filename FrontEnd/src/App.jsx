@@ -7,6 +7,10 @@ import Stats from './components/Stats'
 
 function App() {
 
+  window.addEventListener("load", () => {
+  document.body.classList.remove("preload");
+});
+
   return (
     <div>
       <Header />

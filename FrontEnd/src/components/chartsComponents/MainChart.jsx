@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "../../styles/mainChart.css";
 import axios from "axios";
 import LineChart from "../chartsType/LineChart";
 
-
-export default function MainChart() {
-
+export default function MainChart({w}) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const containerRef = useRef(null); 
+
+  const toggleWillChange = useCallback((enable) => {
+    if (containerRef.current) {
+      containerRef.current.style.willChange = enable ? 'transform opacity' : 'auto';
+    }
+  }, []);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/queries/getByYearICTS`, {})
-      .then((response) => {
-        setData(() => {
-          return response.data;
-        });
-      })
-      .catch((error) => console.error("Errore:", error))
+      .get(`http://localhost:8080/api/queries/getByYearICTS`)
+      .then((response) => setData(response.data))
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
   
-  const dataLen = 5
-  const cardsData = [
+  const dataLen = 5;
+   const cardsData = [
     {
       titolo: "Immatricolati STEM | ICT",
       descrizione:
@@ -52,78 +53,106 @@ export default function MainChart() {
     },
   ];
 
-  const handlePrev = () => {    
-    setCurrentIndex((prev) => prev != 0 ? (prev - 1 + cardsData.length) % cardsData.length : prev);
-  };
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => prev != dataLen - 1 ?  (prev + 1) % cardsData.length : prev);
-  };
+  const handlePrev = useCallback(() => {
+    setCurrentIndex((prev) => prev > 0 ? prev - 1 : dataLen - 1);
+    toggleWillChange(true);
+  }, [toggleWillChange]);
 
-  const getCardClass = (index) => {
-    const diff = (index - currentIndex + cardsData.length) % cardsData.length;
+  const handleNext = useCallback(() => {
+    setCurrentIndex((prev) => prev < dataLen - 1 ? prev + 1 : 0);
+    toggleWillChange(true);
+  }, [toggleWillChange]);
+
+ 
+  useEffect(() => {
+    const timer = setTimeout(() => toggleWillChange(false), 50); 
+    return () => clearTimeout(timer);
+  }, [currentIndex, toggleWillChange]);
+
+  const getCardClass = useCallback((index) => {
+    const diff = (index - currentIndex + dataLen) % dataLen;
     if (diff === 0) return "active";
-    if (diff === cardsData.length - 1) return "prev";
+    if (diff === dataLen - 1) return "prev";
     return "next";
-  };
+  }, [currentIndex, dataLen]);
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="mainchart-containter">
+    <div className="mainchart-containter" ref={containerRef}>
       <h1>Grafici</h1>
 
-      <div className={`mainchart-wrapper`}>
-
-        {currentIndex != 0 && <button
-          className="arrow-btn arrow-btn-left"
-          onClick={handlePrev}
-          aria-label="Precedente"
-        >
-          ←
-        </button>}
+      <div className="mainchart-wrapper">
+        {currentIndex > 0 && (
+          <button
+            className="arrow-btn arrow-btn-left"
+            onClick={handlePrev}
+            aria-label="Precedente"
+          >
+            ←
+          </button>
+        )}
 
         <div className="stack-container">
-          {data &&
-            data.map((chart, idx) => (
-              <div key={idx} onClick={currentIndex + 1 == idx && handleNext || currentIndex + 1 == idx + 2 && handlePrev || (() => {}) } 
-              className={`graph-card ${getCardClass(idx)} ${currentIndex == idx  || currentIndex + 1 == idx || currentIndex + 1 == idx + 2 ? "" : "invisible"}` }>
-                <h3>{chart.text} STEM | ICT</h3>
-                {data &&
-                  <LineChart
-                    vertical={true}
-                    categories={idx == 4 ? [
-                      2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
-                      2022, 2023, 2024
-                    ] : [
-                      2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021,
-                      2022, 2023,
-                    ]}
-                    data1={chart.donne}
-                    data2={chart.uomini}
-                    label1={"donne"}
-                    label2={"uomini"}
-                    active={idx === currentIndex ? true : false}
-                  />
-                }
-              </div>
-            ))}
+          {data.map((chart, idx) => (
+            <div
+              key={idx} 
+              onClick={(() => {
+                if(currentIndex + 1 == idx)
+                    handleNext()
+                else if(currentIndex  == idx + 1)
+                    handlePrev()
+              }) } 
+              className={`graph-card ${getCardClass(idx)} ${
+                Math.abs(idx - currentIndex) > 1 ? "invisible" : ""
+              }`}
+             
+            >
+              <h3>{chart.text} STEM | ICT</h3>
+
+              {w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ?
+                <LineChart
+                vertical={true}
+                categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
+                data1={chart.donne}
+                data2={chart.uomini}
+                label1="donne"
+                label2="uomini"
+                active={idx === currentIndex}
+              /> :  (w < 900 && currentIndex == idx) && <LineChart
+                vertical={true}
+                categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
+                data1={chart.donne}
+                data2={chart.uomini}
+                label1="donne"
+                label2="uomini"
+                active={idx === currentIndex}
+              />}
+            </div>
+          ))}
         </div>
 
-        {currentIndex != dataLen - 1 && <button
-          className="arrow-btn arrow-btn-right"
-          onClick={handleNext}
-          aria-label="Successivo"
-        >
-          →
-        </button>}
+        {currentIndex < dataLen - 1 && (
+          <button
+            className="arrow-btn arrow-btn-right"
+            onClick={handleNext}
+            aria-label="Successivo"
+          >
+            →
+          </button>
+        )}
       </div>
+
       <div className="indicator">
         {cardsData.map((_, idx) => (
           <div
             key={idx}
             className={`dot ${idx === currentIndex ? "active" : ""}`}
-            onClick={() => setCurrentIndex(idx)}
+            onClick={() => {
+              setCurrentIndex(idx);
+              toggleWillChange(true);
+            }}
             aria-label={`Vai a card ${idx + 1}`}
           />
         ))}

@@ -13,8 +13,22 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical}) => {
       type: 'bar',
       height: 350,
       stacked: true,
-      stackType: "100%"
-    },
+      stackType: "100%",
+     
+      animations: {
+        enabled: true,
+        speed: 450,
+        animateGradually: {
+            enabled: true,
+            delay: 150
+        },
+        dynamicAnimation: {
+            enabled: true,
+            speed: 350
+        }
+    }
+   
+  },
 
     states: {
       hover: {

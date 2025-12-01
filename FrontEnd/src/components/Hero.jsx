@@ -13,7 +13,7 @@ export default function Hero() {
       
       // Durate randomiche
       const randomDuration = 8 + Math.random() * 12; // 8-20s
-      const randomDelay = 2 + Math.random() * 5; // 0-5s
+      const randomDelay = 1 + Math.random() * 5; // 0-5s
       
       // Distanze di movimento randomiche
       const randomDistance = 20 + Math.random() * 60; // 20-80px
