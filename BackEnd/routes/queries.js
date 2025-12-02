@@ -112,7 +112,7 @@ router.get("/getByRegion", async (req, res) => {
         i.n_immatricolati AS valore
     FROM immatricolati i
     JOIN atenei a ON a.ateneo_cod = i.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06'
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' 
 
     UNION ALL
 
@@ -170,7 +170,7 @@ router.get("/getByYearICTS", async (req, res) => {
       anno,
       genere,
       SUM(n_immatricolati) as totale
-    FROM immatricolati
+    FROM immatricolati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
     ORDER BY anno DESC;
@@ -181,7 +181,7 @@ router.get("/getByYearICTS", async (req, res) => {
       anno,
       genere,
       SUM(n_laureati) as totale
-    FROM laureati
+    FROM laureati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
     ORDER BY anno DESC;
@@ -192,7 +192,7 @@ router.get("/getByYearICTS", async (req, res) => {
       anno,
       genere,
       SUM(n_dottorandi) as totale
-    FROM dottorandi
+    FROM dottorandi WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
     ORDER BY anno DESC;
@@ -214,7 +214,7 @@ router.get("/getByYearICTS", async (req, res) => {
       anno,
       genere,
       SUM(n_staff) as totale
-    FROM academic_staff
+    FROM academic_staff WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
     ORDER BY anno DESC;
@@ -287,7 +287,7 @@ router.get("/getWomenPer", async (req, res) => {
     anno,cod_foet2013,
     ROUND(100.0 * SUM(CASE WHEN genere = 'F' THEN n_immatricolati ELSE 0 END) / 
           NULLIF(SUM(n_immatricolati), 0), 2) AS perc_donne_stem
-    FROM immatricolati
+    FROM immatricolati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, cod_foet2013
     ORDER BY anno;
 
@@ -298,7 +298,7 @@ router.get("/getWomenPer", async (req, res) => {
     anno,cod_foet2013,
     ROUND(100.0 * SUM(CASE WHEN genere = 'F' THEN n_laureati ELSE 0 END) / 
           NULLIF(SUM(n_laureati), 0), 2) AS perc_donne_stem
-    FROM laureati
+    FROM laureati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, cod_foet2013 
     ORDER BY anno;
     `;
@@ -308,7 +308,7 @@ router.get("/getWomenPer", async (req, res) => {
     anno,cod_foet2013,
     ROUND(100.0 * SUM(CASE WHEN genere = 'F' THEN n_dottorandi ELSE 0 END) / 
           NULLIF(SUM(n_dottorandi), 0), 2) AS perc_donne_stem
-    FROM dottorandi
+    FROM dottorandi WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, cod_foet2013
     ORDER BY anno;
     `;
@@ -318,7 +318,7 @@ router.get("/getWomenPer", async (req, res) => {
     anno,cod_foet2013,
     ROUND(100.0 * SUM(CASE WHEN genere = 'F' THEN n_dottori ELSE 0 END) / 
           NULLIF(SUM(n_dottori), 0), 2) AS perc_donne_stem
-    FROM dottori
+    FROM dottori WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, cod_foet2013
     ORDER BY anno;
     `;
@@ -328,7 +328,7 @@ router.get("/getWomenPer", async (req, res) => {
     anno,cod_sd,
     ROUND(100.0 * SUM(CASE WHEN genere = 'F' THEN n_staff ELSE 0 END) / 
           NULLIF(SUM(n_staff), 0), 2) AS perc_donne_stem
-    FROM academic_staff
+    FROM academic_staff WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, cod_sd
     ORDER BY anno;
     `;

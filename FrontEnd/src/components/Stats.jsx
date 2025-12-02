@@ -13,7 +13,7 @@ export default function Stats() {
         <div className='stats-grid'>
 
             <div className='stat-card'>
-                <div className='stat-value'><Count from={0} to={83} duration={0.8} className="count-up-text" />°</div>
+                <div className='stat-value'><Count from={0} to={85} duration={0.8} className="count-up-text" />°</div>
                 <div className='stat-label'>Posizione dell'Italia nel Global Gender Gap Index 2025 su 148 paesi (punteggio: 0,704)</div>
             </div>
             <div className="stat-card">

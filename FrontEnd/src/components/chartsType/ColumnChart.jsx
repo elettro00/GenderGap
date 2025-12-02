@@ -109,7 +109,6 @@ const ColumnChart = ({data1, data2, label1, label2, categories, vertical, w}) =>
       data: data2,
     },
   ];
-  console.log(w);
   
   return <Chart options={options} series={series} type="bar" height={350} />;
 };
