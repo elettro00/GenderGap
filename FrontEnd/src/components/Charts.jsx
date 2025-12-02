@@ -3,6 +3,7 @@ import Map from "./chartsComponents/Map";
 import "../styles/charts.css";
 import MainChart from "./chartsComponents/MainChart";
 import SecondaryChart from "./chartsComponents/SecondaryChart";
+import FilterCharts from "./chartsComponents/FilterCharts";
 
 export default function Charts() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -16,7 +17,7 @@ export default function Charts() {
 
   return (
     <section id="charts-section" className="section">
-      <h2 className="section-title">[riempimento]</h2>
+      <h2 className="section-title">VARI GRAFICI PER DESCRIVERE IL GENDER GAP IN ITALIA</h2>
       <p className="section-subtitle">
         Confronti e tendenze nei principali indicatori del divario
       </p>
@@ -39,6 +40,11 @@ export default function Charts() {
       <div className="chart-container">
         <div className="chart-title">Confronto tra materie STEM | ICT con il maggior Gender Gap negli anni</div>
         <SecondaryChart w={width} />
+      </div>
+
+      <div className="chart-container">
+        <div className="chart-title">Scegli tu cosa vedere</div>
+          <FilterCharts />
       </div>
       
     </section>

@@ -1,0 +1,25 @@
+.filter-container{
+    width: 100%;
+    height: 650px;
+}
+    
+.filter-choose{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+    
+.filter-chart{
+
+}
+
+
+@media (max-width: 768px) {
+  .filter-choose {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+

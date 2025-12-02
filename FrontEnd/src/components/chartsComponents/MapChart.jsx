@@ -3,7 +3,7 @@ import BarChart from "../chartsType/BarChart";
 import axios from "axios";
 // import { millify } from 'millify';
 
-const MapChart = ({ region }) => {
+const MapChart = ({ region, year }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,6 +13,8 @@ const MapChart = ({ region }) => {
         .get(
           `http://localhost:8080/api/queries/getByRegion?regione=${
             region ? region.name : "ITALIA"
+          }&year=${
+            year
           }`,
           {}
         )
@@ -23,12 +25,12 @@ const MapChart = ({ region }) => {
         })
         .catch((error) => console.error("Errore:", error))
         .finally(() => setLoading(false));
-  }, [region]);
+  }, [region, year]);
 
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8080/api/queries/getByRegion?regione=ITALIA`,
+        `http://localhost:8080/api/queries/getByRegion?regione=ITALIA&year=${year}`,
         {}
       )
       .then((response) => {
@@ -38,10 +40,10 @@ const MapChart = ({ region }) => {
       })
       .catch((error) => console.error("Errore:", error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [year]);
 
   
-  if (loading) return <p>Caricamento...</p>;
+  if (loading) return <p>Caricamento...</p>;  
 
   return (
     <div className="map-chart-container">

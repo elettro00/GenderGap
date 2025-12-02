@@ -84,17 +84,21 @@ const db = require("../config/database");
 
 router.get("/getByRegion", async (req, res) => {
   try {
-    // console.log(req.query.regione);
-    // console.log(req);
+    // console.log(req.query.year, req.query.regione );
 
     const regione = req.query.regione.toUpperCase();
+    const anno = req.query.year ? req.query.year : 'ALL'
 
+    // console.log(anno);
+    
     if (!regione) {
       return res.status(400).json({ error: "Parametro regione mancante" });
     }
 
+    let query =``
     // all
-    let query = `
+    if(anno == "ALL")
+    query=`
      SELECT 
     genere,
     SUM(CASE WHEN tipo = 'immatricolati' THEN valore ELSE 0 END) AS t_i,
@@ -127,7 +131,7 @@ router.get("/getByRegion", async (req, res) => {
         l.n_laureati AS valore
     FROM laureati l
     JOIN atenei a ON a.ateneo_cod = l.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06'
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' 
 
     UNION ALL
 
@@ -142,14 +146,70 @@ router.get("/getByRegion", async (req, res) => {
         s.n_staff AS valore
     FROM academic_staff s
     JOIN atenei a ON a.ateneo_cod = s.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_sd IN ('01', '09')
+    WHERE UPPER(a.regione) = ? AND cod_sd IN ('01', '09') 
+) AS combined
+GROUP BY genere
+ORDER BY genere;
+
+     `;
+     else
+      query=`
+     SELECT 
+    genere,
+    SUM(CASE WHEN tipo = 'immatricolati' THEN valore ELSE 0 END) AS t_i,
+    SUM(CASE WHEN tipo = 'laureati'      THEN valore ELSE 0 END) AS t_l,
+    SUM(CASE WHEN tipo = 'staff'         THEN valore ELSE 0 END) AS t_s
+    FROM (
+    -- IMMATRICOLATI
+    SELECT 
+        CASE 
+            WHEN i.genere = 'M' THEN 'Uomini'
+            WHEN i.genere = 'F' THEN 'Donne'
+            ELSE i.genere
+        END AS genere,
+        'immatricolati' AS tipo,
+        i.n_immatricolati AS valore
+    FROM immatricolati i
+    JOIN atenei a ON a.ateneo_cod = i.ateneo_cod
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' AND i.anno = ?
+
+    UNION ALL
+
+    -- LAUREATI
+    SELECT 
+        CASE 
+            WHEN l.genere = 'M' THEN 'Uomini'
+            WHEN l.genere = 'F' THEN 'Donne'
+            ELSE l.genere
+        END AS genere,
+        'laureati' AS tipo,
+        l.n_laureati AS valore
+    FROM laureati l
+    JOIN atenei a ON a.ateneo_cod = l.ateneo_cod
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' AND l.anno = ?
+
+    UNION ALL
+
+    -- STAFF ACCADEMICO
+    SELECT 
+        CASE 
+            WHEN s.genere = 'M' THEN 'Uomini'
+            WHEN s.genere = 'F' THEN 'Donne'
+            ELSE s.genere
+        END AS genere,
+        'staff' AS tipo,
+        s.n_staff AS valore
+    FROM academic_staff s
+    JOIN atenei a ON a.ateneo_cod = s.ateneo_cod
+    WHERE UPPER(a.regione) = ? AND cod_sd IN ('01', '09') AND s.anno = ?
 ) AS combined
 GROUP BY genere
 ORDER BY genere;
 
      `;
 
-    const [results] = await db.query(query, [regione, regione, regione]);
+
+    const [results] = await db.query(query, anno == 'ALL' ? [regione, regione, regione] : [regione, anno, regione, anno, regione, anno]);
 
     // console.log({ donne: [results[0].t_i, results[0].t_l, results[0].t_dn, results[0].t_di, results[0].t_s]});
     // console.log({ uomini: [results[1].t_i, results[1].t_l, results[1].t_dn, results[1].t_di, results[1].t_s]});

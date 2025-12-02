@@ -35,6 +35,7 @@ app.use((err, req, res, next) => {
 
 //routes
 app.use('/api/queries', require('./routes/queries'));
+app.use('/api/filter', require('./routes/filter'));
 
 
 const PORT = process.env.PORT || 8080;
