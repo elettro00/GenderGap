@@ -1,16 +1,16 @@
 import React from "react";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import "../styles/insights.css";
 import "../styles/genderGapFAQ.css";
 
 export default function GenderGapFAQ() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
+    // <motion.div
+    //   initial={{ opacity: 0, y: 30 }}
+    //   whileInView={{ opacity: 1, y: 0 }}
+    //   viewport={{ once: false }}
+    //   transition={{ duration: 0.6, ease: "easeOut" }}
+    // >
       <section id="gender-gap-faq" className="section">
         <h2 className="section-title">Domande sul Gender Gap</h2>
         <p className="section-subtitle">
@@ -69,6 +69,6 @@ export default function GenderGapFAQ() {
           </div>
         </div>
       </section>
-    </motion.div>
+    // </motion.div>
   );
 }

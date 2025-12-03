@@ -44,7 +44,7 @@ const LimitMap = () => {
 };
 
 const Map = () => {
-  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState({name: "Italia"});
   const [geoJsonRef, setGeoJsonRef] = useState(null);
   const [selectedYear, setSelectedYear] = useState("ALL");
 

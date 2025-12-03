@@ -79,18 +79,18 @@ export default function FilterCharts() {
   
 
 
-    useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/filter/getByFilter` , {params: {
-        year: year,
-        regione:regione,
-        classe:classe,
-        genere:genere,
-      }})
-      .then((response) => setData(response.data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [year, regione, classe, genere]);
+  //   useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:8080/api/filter/getByFilter` , {params: {
+  //       year: year,
+  //       regione:regione,
+  //       classe:classe,
+  //       genere:genere,
+  //     }})
+  //     .then((response) => setData(response.data))
+  //     .catch(console.error)
+  //     .finally(() => setLoading(false));
+  // }, [year, regione, classe, genere]);
 
     
 return (    
@@ -99,7 +99,7 @@ return (
     
         <div className='filter-choose'>
             <Dropdown options={options_years} title={"Seleziona Anno:"} df={'ALL'} setData={setYear} desc={'filter-year'}/>
-            <Dropdown options={options_type} title={"Seleziona Classe:"} df={'1'} setData={setClasse} desc={'filter-class'}/>
+            <Dropdown options={options_type} title={"Seleziona Classe:"} df={'ALL'} setData={setClasse} desc={'filter-class'}/>
             <Dropdown options={options_gender} title={"Seleziona Genere:"} df={'ALL'} setData={setGenere} desc={'filter-gender'}/>
             <Dropdown options={options_regione} title={"Seleziona Regione:"} df={'ALL'} setData={setRegione} desc={'filter-regione'}/>
             <Dropdown options={options_area_geo} title={"Seleziona Area Geo:"} df={'ALL'} setData={setArea} desc={'filter-area'}/>

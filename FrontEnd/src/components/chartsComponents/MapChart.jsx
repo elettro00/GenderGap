@@ -7,7 +7,7 @@ const MapChart = ({ region, year }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect( () => {
     region &&
       axios
         .get(
@@ -26,22 +26,6 @@ const MapChart = ({ region, year }) => {
         .catch((error) => console.error("Errore:", error))
         .finally(() => setLoading(false));
   }, [region, year]);
-
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8080/api/queries/getByRegion?regione=ITALIA&year=${year}`,
-        {}
-      )
-      .then((response) => {
-        setData(() => {
-          return response.data;
-        });
-      })
-      .catch((error) => console.error("Errore:", error))
-      .finally(() => setLoading(false));
-  }, [year]);
-
   
   if (loading) return <p>Caricamento...</p>;  
 

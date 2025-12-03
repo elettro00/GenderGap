@@ -40,6 +40,7 @@ export default function Charts() {
       <div className="chart-container">
         <div className="chart-title">Confronto tra materie STEM | ICT con il maggior Gender Gap negli anni</div>
         <SecondaryChart w={width} />
+        
       </div>
 
       <div className="chart-container">
