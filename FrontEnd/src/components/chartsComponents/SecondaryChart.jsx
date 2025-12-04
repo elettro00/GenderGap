@@ -133,11 +133,11 @@ export default function SecondaryChart({ w }) {
                     </div>
                     <h3>{cardsData[idx].titolo}</h3>
 
-                    {/* {x.value[currentSubIndex] &&
+                    {x.value[currentSubIndex] &&
                     w >= 900 &&
                     (idx == currentIndex ||
                       idx == currentIndex + 1 ||
-                      idx + 1 == currentIndex) ? ( */}
+                      idx + 1 == currentIndex) ? (
                       <ColumnChart
                         w={w}
                         categories={[...x.anno]}
@@ -151,7 +151,7 @@ export default function SecondaryChart({ w }) {
                         label1={"Donne"}
                         label2={"Uomini"}
                       />
-                    {/* ) 
+                    ) 
                     : (
                       w < 900 &&
                       currentIndex == idx && (
@@ -169,7 +169,7 @@ export default function SecondaryChart({ w }) {
                           label2={"Donne"}
                         />
                       )
-                    )} */}
+                    )} 
                   </div>
                 ))}
             </div>

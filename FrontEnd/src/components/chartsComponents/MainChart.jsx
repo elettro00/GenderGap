@@ -36,7 +36,7 @@ import { getCachedData } from "../utilities/cache";
   ];
 
 
-export default function MainChart() {
+export default function MainChart({ w }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -112,7 +112,7 @@ export default function MainChart() {
             >
               <h3>{chart.text} STEM | ICT</h3>
 
-              {/* {w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ? */}
+              {w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ?
                 <LineChart
                 vertical={true}
                 categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
@@ -122,7 +122,7 @@ export default function MainChart() {
                 label2="donne"
                 active={idx === currentIndex}
               /> 
-              {/* :  (w < 900 && currentIndex == idx) && <LineChart
+              :  (w < 900 && currentIndex == idx) && <LineChart
                 vertical={true}
                 categories={idx === 4 ? [2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024] : [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023]}
                 data1={chart.uomini}
@@ -131,7 +131,7 @@ export default function MainChart() {
                 label2="donne"
                 active={idx === currentIndex}
               />
-              } */}
+              }
             </div>
           ))}
         </div>
