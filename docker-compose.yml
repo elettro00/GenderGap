@@ -46,7 +46,7 @@ services:
       - MYSQL_PASSWORD=gendergap_password
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./conte.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mydata.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - backend-network
     healthcheck:
