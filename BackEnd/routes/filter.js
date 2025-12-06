@@ -318,7 +318,7 @@ router.get("/getByFilter", async (req, res) => {
           tempRes.push({ data: commit, type: key });
         })
       );
-      console.log(tempRes);
+      // console.log(tempRes);
 
       res.json({
         data: [...tempRes],

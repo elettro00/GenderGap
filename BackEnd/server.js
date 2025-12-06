@@ -27,6 +27,7 @@ try {
     //routes
     app.use('/api/queries', require('./routes/queries'));
     app.use('/api/filter', require('./routes/filter'));
+    app.use('/api/dnf', require('./routes/dnf'));
 
 
     // Error handling

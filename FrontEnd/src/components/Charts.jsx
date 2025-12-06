@@ -4,6 +4,7 @@ import "../styles/charts.css";
 import MainChart from "./chartsComponents/MainChart";
 import SecondaryChart from "./chartsComponents/SecondaryChart";
 import FilterCharts from "./chartsComponents/FilterCharts";
+import DNFCharts from "./chartsComponents/DNFCharts";
 
 export default function Charts() {
   const [width, setWidth] = useState(window.innerWidth);
@@ -48,6 +49,14 @@ export default function Charts() {
         <div className="chart-title">Scegli tu cosa vedere</div>
           <FilterCharts />
       </div>)}
+
+
+      {width > 720 && (
+      <div className="chart-container">
+        <div className="chart-title">Scegli tu cosa vedere</div>
+          <DNFCharts />
+      </div>)}
+      
       
     </section>
   );
