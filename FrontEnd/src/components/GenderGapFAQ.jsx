@@ -47,9 +47,9 @@ export default function GenderGapFAQ() {
           <div className="insight-card gg-faq-item">
             <div className="insight-title">📊 Che cosa mostrano i grafici?</div>
             <div className="insight-text">
-              I grafici seguono le principali tappe della carriera accademica –
+              I grafici seguono le principali tappe della carriera accademica
               immatricolati, laureati, dottori, dottorandi e
-              professori/ricercatori – e mostrano come le donne restino
+              professori/ricercatori e le varie aziende in cui lavorano, dove mostrano come le donne restino
               sistematicamente sottorappresentate rispetto agli uomini in ogni
               fase, con un divario particolarmente marcato nelle aree ICT.
             </div>

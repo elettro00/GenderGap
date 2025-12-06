@@ -47,3 +47,7 @@
   line-height: 1.8;
 }
 
+.insight-link {
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
