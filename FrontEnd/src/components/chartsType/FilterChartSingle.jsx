@@ -8,7 +8,8 @@ const FilterChartSingle = React.memo(({
   label1, 
   categories, 
   vertical,
-  barColor
+  barColor,
+  isPerc
 }) => {
   
   const options = useMemo(() => ({
@@ -77,7 +78,7 @@ const FilterChartSingle = React.memo(({
       intersect: false,
       y: {
         formatter: function (val) {
-          return millify(val).toString();
+          return isPerc ?  val + "%" : millify(val).toString();
         }
       }
     },
@@ -100,14 +101,15 @@ const FilterChartSingle = React.memo(({
         }
       }
     },
-  }), [ categories, vertical, barColor]); 
+  }), [ categories, vertical, isPerc, barColor]); 
 
   const series = useMemo(() => [
     {
       name: label1,
       data: data1,
+      color: barColor ||  '#008ffbd9' 
     }
-  ], [data1,  label1]);
+  ], [data1,  label1, barColor]);
 
   return (
     <Chart 

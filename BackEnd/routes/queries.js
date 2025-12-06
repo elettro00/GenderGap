@@ -116,7 +116,7 @@ router.get("/getByRegion", async (req, res) => {
         i.n_immatricolati AS valore
     FROM immatricolati i
     JOIN atenei a ON a.ateneo_cod = i.ateneo_cod 
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' 
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = 6
 
     UNION ALL
 
@@ -131,7 +131,7 @@ router.get("/getByRegion", async (req, res) => {
         l.n_laureati AS valore
     FROM laureati l
     JOIN atenei a ON a.ateneo_cod = l.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06'  
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = 6 
 
     UNION ALL
 
@@ -171,7 +171,7 @@ ORDER BY genere;
         i.n_immatricolati AS valore
     FROM immatricolati i
     JOIN atenei a ON a.ateneo_cod = i.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' AND i.anno = ? 
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = 6 AND i.anno = ? 
 
     UNION ALL
 
@@ -186,7 +186,7 @@ ORDER BY genere;
         l.n_laureati AS valore
     FROM laureati l
     JOIN atenei a ON a.ateneo_cod = l.ateneo_cod
-    WHERE UPPER(a.regione) = ? AND cod_foet2013 = '06' AND l.anno = ?  
+    WHERE UPPER(a.regione) = ? AND cod_foet2013 = 6 AND l.anno = ?  
 
     UNION ALL
 
@@ -233,7 +233,7 @@ router.get("/getByYearICTS", async (req, res) => {
     FROM immatricolati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M' 
-    ORDER BY anno DESC;
+    ORDER BY anno;
     `;
 
     let query_l = `
@@ -244,7 +244,7 @@ router.get("/getByYearICTS", async (req, res) => {
     FROM laureati WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
-    ORDER BY anno DESC;
+    ORDER BY anno;
     `;
 
     let query_d = `
@@ -255,7 +255,7 @@ router.get("/getByYearICTS", async (req, res) => {
     FROM dottorandi WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
-    ORDER BY anno DESC;
+    ORDER BY anno;
     `;
 
     let query_dn = `
@@ -266,7 +266,7 @@ router.get("/getByYearICTS", async (req, res) => {
     FROM dottori
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
-    ORDER BY anno DESC;
+    ORDER BY anno;
     `;
 
     let query_a = `
@@ -277,7 +277,7 @@ router.get("/getByYearICTS", async (req, res) => {
     FROM academic_staff WHERE ateneo_cod != 'TTTTT'
     GROUP BY anno, genere
     HAVING genere = 'F' OR genere = 'M'
-    ORDER BY anno DESC;
+    ORDER BY anno;
     `;
 
     let [results_i] = await db.query(query_i);
@@ -286,6 +286,7 @@ router.get("/getByYearICTS", async (req, res) => {
     let [results_dn] = await db.query(query_dn);
     let [results_a] = await db.query(query_a);
 
+    
     const results = [
       {
         donne: results_i

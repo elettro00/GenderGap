@@ -16,12 +16,12 @@ const cardsData = [
   {
     titolo: "Laureati STEM | ICT",
     descrizione:
-      "Tra il 2013 e il 2023 il numero di laureati in STEM e ICT diminuisce sia per uomini sia per donne, ma il divario rimane costante: gli uomini restano nettamente più numerosi, segnalando che il digital gender gap non si chiude lungo il percorso di studi, ma si consolida dall’immatricolazione al conseguimento del titolo.",
+      "Tra il 2013 e il 2023 il numero di laureati in STEM e ICT aumenta sia per uomini sia per donne, ma il divario rimane costante: gli uomini restano nettamente più numerosi, segnalando che il digital gender gap non si chiude lungo il percorso di studi, ma si consolida dall’immatricolazione al conseguimento del titolo.",
   },
   {
     titolo: "Dottorandi STEM | ICT",
     descrizione:
-      "Nel dottorato il grafico conferma una forte prevalenza maschile: le donne sono sistematicamente meno presenti nei percorsi avanzati di ricerca STEM e ICT, indicando che l’accesso femminile alle posizioni di alta formazione nel digitale è ancora limitato e selettivo.",
+      "Nel dottorato il grafico conferma una forte prevalenza maschile: le donne sono sistematicamente più presenti nei percorsi avanzati di ricerca STEM e ICT,ma comunque c'è ancora un gradne divario con gli uomini.",
   },
   {
     titolo: "Dottori STEM | ICT",
@@ -114,7 +114,7 @@ export default function MainChart({ w }) {
               {w >= 900 && (idx == currentIndex || idx == currentIndex + 1 || idx + 1 == currentIndex) ?
                 <LineChart
                   vertical={true}
-                  categories={idx === 4 ? [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024] : [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]}
+                  categories={idx === 4 ? [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024] : [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]}
                   data1={chart.uomini}
                   data2={chart.donne}
                   label1="uomini"
@@ -123,7 +123,7 @@ export default function MainChart({ w }) {
                 />
                 : (w < 900 && currentIndex == idx) && <LineChart
                   vertical={true}
-                  categories={idx === 4 ? [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024] : [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]}
+                  categories={idx === 4 ? [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024] : [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]}
                   data1={chart.uomini}
                   data2={chart.donne}
                   label1="uomini"

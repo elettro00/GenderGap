@@ -13,7 +13,8 @@ const FilterChart = React.memo(({
   label1, 
   label2, 
   categories, 
-  vertical 
+  vertical,
+  isPerc
 }) => {
   
   const options = useMemo(() => ({
@@ -74,7 +75,7 @@ const FilterChart = React.memo(({
       intersect: false,
       y: {
         formatter: function (val) {
-          return millify(val).toString();
+          return isPerc ? val + "%" : millify(val).toString();
         }
       }
     },
@@ -98,7 +99,7 @@ const FilterChart = React.memo(({
     }
   }
     },
-  }), [ categories, vertical]); 
+  }), [ categories, vertical, isPerc]); 
 
   const series = useMemo(() => [
     {

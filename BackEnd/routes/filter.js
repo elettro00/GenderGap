@@ -111,7 +111,7 @@ router.get("/getByFilter", async (req, res) => {
               ? settore == 1
                 ? " WHERE cod_sd IN ('01','09')"
                 : ""
-              : " WHERE cod_foet2013 = '06'"
+              : " WHERE cod_foet2013 = 6"
           }`;
         } else if (sectorCheck) {
           query += `${
@@ -119,7 +119,7 @@ router.get("/getByFilter", async (req, res) => {
               ? settore == 1
                 ? " AND cod_sd IN ('01','09')"
                 : ""
-              : " AND cod_foet2013 = '06'"
+              : " AND cod_foet2013 = 6"
           }`;
         }
 
@@ -200,7 +200,7 @@ router.get("/getByFilter", async (req, res) => {
               ? settore == 1
                 ? " WHERE cod_sd IN ('01','09')"
                 : ""
-              : " WHERE cod_foet2013 = '06'"
+              : " WHERE cod_foet2013 = 6"
           }`;
         } else if (sectorCheck) {
           query += `${
@@ -208,7 +208,7 @@ router.get("/getByFilter", async (req, res) => {
               ? settore == 1
                 ? " AND cod_sd IN ('01','09')"
                 : ""
-              : " AND cod_foet2013 = '06'"
+              : " AND cod_foet2013 = 6"
           }`;
         }
 
@@ -256,13 +256,13 @@ router.get("/getByFilter", async (req, res) => {
             thisCheck = true
           }
 
-                    if (sectorCheck && !genderCheck && !yearCheck && !regionCheck && !thisCheck ) {
+          if (sectorCheck && !genderCheck && !yearCheck && !regionCheck && !thisCheck ) {
             query += `${
               value.toUpperCase() == "STAFF"
                 ? settore == 1
                   ? " WHERE cod_sd IN ('01','09')"
                   : ""
-                : " WHERE cod_foet2013 = '06'"
+                : " WHERE cod_foet2013 = 6"
             }`;
           } else if (sectorCheck) {
             query += `${
@@ -270,7 +270,7 @@ router.get("/getByFilter", async (req, res) => {
                 ? settore == 1
                   ? " AND cod_sd IN ('01','09')"
                   : ""
-                : " AND cod_foet2013 = '06'"
+                : " AND cod_foet2013 = 6"
             }`;
           }
             
@@ -291,8 +291,9 @@ router.get("/getByFilter", async (req, res) => {
           let accPF = 0;
           let n = 0;
           let anni = [];
+
           results.map((x, idx) => {
-            n = idx;
+            n++;
             accM += parseInt(x.uomini);
             accF += parseInt(x.donne);
             accPF += parseFloat(x.perc_donne);
@@ -317,7 +318,7 @@ router.get("/getByFilter", async (req, res) => {
           tempRes.push({ data: commit, type: key });
         })
       );
-      // console.log(tempRes);
+      console.log(tempRes);
 
       res.json({
         data: [...tempRes],
