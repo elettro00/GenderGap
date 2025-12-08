@@ -12,8 +12,8 @@ export default function Insights() {
     >
     <section id="insights" class="section">
 
-        <h2 className="section-title">Approfondimenti Strategici [riempimento]</h2>
-        <p className="section-subtitle">Fattori chiave e raccomandazioni per colmare il divario</p>
+        <h2 className="section-title">Approfondimenti Strategici</h2>
+        <p className="section-subtitle">Fattori chiave sul Gender Gap</p>
 
         <div className="insights-grid">
 

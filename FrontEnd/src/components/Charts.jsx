@@ -46,7 +46,7 @@ export default function Charts() {
 
       {width > 720 && (
       <div className="chart-container">
-        <div className="chart-title">Scegli tu cosa vedere</div>
+        <div className="chart-title">Grafico con filtro per osservare cosa succede nellle università</div>
           <FilterCharts />
       </div>)}
 
