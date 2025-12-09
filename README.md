@@ -1,5 +1,7 @@
 # GenderGap
 
+Il progetto é hoststo al segunte indirizzo: http://96.9.214.61:9001
+
 Analisi e visualizzazione del gender gap (distribuzione uomini/donne) per area geografica e anno, con particolare attenzione al settore digitale nelle università italiane e in alcune aziende ICT.
 Il progetto include:
 
